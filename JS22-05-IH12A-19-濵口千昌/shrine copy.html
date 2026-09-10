@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Marker</title>
+    <link rel="stylesheet" type="text/css" href="./shrine.css">
+    <!-- The callback parameter is required, so we use console.debug as a noop -->
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAKLjisxFelKwIl1_G6MiEO9-ya7Twr5s&callback=initMap">
+    </script>
+  </head>
+<body>
+
+  <header>
+    <h1>名古屋神社めぐり</h1>
+    <p>名古屋三大天神を巡る</p>
+  </header>
+
+  <div id="container">
+
+    <!-- aside = 補足情報　div=空の箱 -->
+    <aside id="menu">
+      <nav>
+        <ul>
+
+          <li>
+            <h3 class="menu-btn" onclick="moveMap('yamada')">
+              ⛩ 山田天満宮
+            </h3>
+
+            <div class="detail" id="detail-yamada">
+            </div>
+          </li>
+
+          <li>
+            <h3 class="menu-btn" onclick="moveMap('ueno')">
+              ⛩ 上野天満宮
+            </h3>
+            <div class="detail" id="detail-ueno">
+            </div>
+          </li>
+
+          <li>
+            <h3 class="menu-btn" onclick="moveMap('sakura')">
+              ⛩ 桜天神社
+            </h3>
+            <div class="detail" id="detail-sakura">
+            </div>
+          </li>
+
+        </ul>
+      </nav>
+    </aside>
+
+    <div id="map"></div>
+
+  </div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<script>
+
+let map;
+const markers = {};
+let currentInfoWindow = null;
+
+//navクリックで移動
+function moveMap(id){
+
+  const marker = markers[id];
+
+  //表示中のInfoWindowを閉じる
+  if(currentInfoWindow){
+    currentInfoWindow.close();
+    currentInfoWindow = null;
+  }
+
+  map.panTo(marker.getPosition());
+  map.setZoom(18);
+
+}
+
+function initMap() {
+
+  console.log("initMap開始");
+
+  fetch('./shrine.json')
+  .then(response => response.json())
+  .then(data => {
+
+    console.log("json取得成功");
+
+    const shrine = data.shrine;
+
+    //Google Map作成
+    map = new google.maps.Map(
+      document.getElementById("map"),
+      {
+        zoom: 18,
+        center: {
+          lat: 35.19597701956669,
+          lng: 136.93835191951513
+        },
+        zoomControl: true,
+        mapTypeControl: true,
+        streetViewControl: false
+      }
+    );
+
+    shrine.forEach(function(loc){
+
+      console.log(loc.id);
+
+      //マーカー作成
+      const marker = new google.maps.Marker({
+        position:{
+          lat: loc.lat,
+          lng: loc.lng
+        },
+        map: map,
+        title: loc.name
+      });
+
+      //idごとにマーカー保存
+      markers[loc.id] = marker;
+
+      //詳細情報
+      console.log(loc);
+      console.log(loc.statue);
+      console.log(loc.statue.img);
+
+      $("#detail-" + loc.id).html(
+        "<h2> 由緒 </h2>" +
+        "<p>" + loc.description + "</p>" +
+        "<img src='" + loc.statue.img + "' alt='" + loc.statue.name + "'>" +
+        "<h3>" + loc.statue.name + "</h3>" +
+        "<p>" + loc.statue.description + "</p>"
+      );
+
+      //InfoWindow作成
+      const infoWindow = new google.maps.InfoWindow({
+        content:
+          "<div class='map-info'>" +
+            "<img src='" + loc.img + "' alt='" + loc.name + "'>" +
+            "<h2>" + loc.name + "</h2>" +
+            "<p>所在地：" + loc.location + "</p>" +
+            "<p>アクセス：" + loc.access + "</p>" +
+            "<p>" + loc.features + "</p>" +
+          "</div>"
+      });
+
+      //マーカークリック
+      marker.addListener("click", function(){
+
+        //前のInfoWindowを閉じる
+        if(currentInfoWindow){
+          currentInfoWindow.close();
+        }
+
+        //InfoWindow表示
+        infoWindow.open(map, marker);
+
+        //現在表示中として保存
+        currentInfoWindow = infoWindow;
+
+      });
+    });
+
+    // メニューボタンクリックで詳細情報の表示
+    //accordionでクリックで開閉
+    //collapsible: 開いている項目をtrueでもう一度クリックで閉じることができるようにする
+    //active: falseで最初は全部閉じた状態
+    //heightStyle: "content"で高さを自動調整　contentは説明量（中身の高さ）に合わせる
+    $("#menu ul").accordion({
+      collapsible: true,
+      active: false,
+      heightStyle: "content"
+    });
+
+    // 地図クリックでInfoWindowを閉じる
+    map.addListener("click", function(){
+      if(currentInfoWindow){
+        currentInfoWindow.close();
+        currentInfoWindow = null;
+      }
+    });
+
+  });
+
+}
+
+
+window.initMap = initMap;
+
+
+</script>
+
+</body>
+</html>

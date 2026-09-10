@@ -1,0 +1,160 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background-color: #f7f3eb;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+header {
+  background: linear-gradient(135deg, #8b0000, #b22222);
+  color: #ffffff;
+  text-align: center;
+  padding: 20px 0;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+header h1 {
+  margin: 0;
+  letter-spacing: 0.15em;
+}
+
+header p {
+  margin-top: 8px;
+  font-size: 0.9rem;
+}
+
+#container {
+  flex: 1;
+  display: flex;
+  padding-top: 130px;
+}
+
+#container #menu {
+  width: clamp(280px, 30vw, 500px);
+  background-color: #fffdf8;
+  box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#container #menu nav {
+  height: 100%;
+}
+
+#container #menu nav ul {
+  margin: 0;
+  padding: 25px;
+  list-style: none;
+}
+
+#container #menu nav ul li {
+  margin-bottom: 15px;
+}
+
+#container #menu nav ul li > h3 {
+  display: block;
+  padding: 15px;
+  margin: 0;
+  cursor: pointer;
+  color: #5c4033;
+  background-color: #ffffff;
+  border-left: 5px solid #b22222;
+  border-radius: 10px;
+}
+
+#container #menu nav ul li a:hover {
+  transform: translateX(8px);
+  background-color: #edecec;
+}
+
+#menu nav ul li .detail {
+  display: none;
+  padding: 15px;
+  background-color: #ffe9e9;
+  border-left: 5px solid #b22222;
+}
+
+.detail{
+  display: none;
+  padding: 15px;
+  margin-top: 10px;
+  background: #fffaf5;
+  border-left: 5px solid #b22222;
+  border-radius: 0 10px 10px 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.detail h2{
+  margin: 10px 0;
+  color: #8b0000;
+  text-align: center;
+  font-size: 1.2rem;
+  border-bottom: 2px solid #e6d5d5;
+  padding-bottom: 5px;
+}
+
+.detail img{
+  width: 100%;
+  max-width: 320px;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+  margin: 15px auto;
+  border-radius: 10px;
+}
+
+.detail h3{
+  margin: 10px 0;
+  color: #8b0000;
+  text-align: center;
+  font-size: 1.1rem;
+  border-bottom: 2px solid #e6d5d5;
+  padding-bottom: 5px;
+}
+
+.detail p{
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #444;
+}
+
+#container #map {
+  flex: 1;
+  height: 100%;
+}
+
+.map-info {
+  width: 460px;
+  height: auto;
+}
+
+.map-info img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.map-info h2 {
+  color: #8b0000;
+  margin: 10px 0;
+}
+
+.map-info p {
+  font-size: 14px;
+  line-height: 1.6;
+}
