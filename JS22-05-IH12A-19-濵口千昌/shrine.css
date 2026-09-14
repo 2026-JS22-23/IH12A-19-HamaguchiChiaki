@@ -9,6 +9,7 @@ body {
   display: flex;
   flex-direction: column;
   background-color: #f7f3eb;
+  overflow:hidden;
 }
 
 header {
@@ -43,12 +44,17 @@ header p {
   flex: 1;
   display: flex;
   padding-top: 130px;
+  min-height: 0;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 #container #menu {
   width: clamp(280px, 30vw, 500px);
+  min-height: 0;
   background-color: #fffdf8;
   box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
 }
 
 #container #menu nav {
